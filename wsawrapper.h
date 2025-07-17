@@ -2,7 +2,6 @@
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <windows.h>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -85,7 +84,7 @@ static int select_timeout(fd_set *readfds, fd_set *writefds, long tv_sec, long t
 	timeout.tv_sec = tv_sec;
 	timeout.tv_usec = tv_microsec;
 
-	return select(0, readfds, writefds, NULL, (const timeval *)&timeout);
+	return select(0, readfds, writefds, NULL, (const struct timeval *)&timeout);
 }
 
 static int select_unblocking(fd_set *readfds, fd_set *writefds) {
