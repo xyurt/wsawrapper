@@ -104,7 +104,7 @@ static int host_resolve(const char *hostname, struct in_addr *out) {
 	struct addrinfo *result;
 	if (getaddrinfo(hostname, NULL, &hints, &result) != 0 || result == NULL || result->ai_addr == NULL) return 0;
 
-	*out = *((struct in_addr *)result->ai_addr);
+	*out = ((struct sockaddr_in *)result->ai_addr)->sin_addr;
 	freeaddrinfo(result);
 	return 1;
 }
