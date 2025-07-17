@@ -94,3 +94,17 @@ static int select_unblocking(fd_set *readfds, fd_set *writefds) {
 static int select_blocking(fd_set *readfds, fd_set *writefds) {
 	return select(0, readfds, writefds, NULL, NULL);
 }
+
+static int host_resolve(const char *hostname, struct in_addr *out) {
+	struct addrinfo hints = { 0 };
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+
+	struct addrinfo *result;
+	if (getaddrinfo(hostname, NULL, &hints, &result) != 0 || result == NULL || result->ai_addr == NULL) return 0;
+
+	*out = *((struct in_addr *)result->ai_addr);
+	freeaddrinfo(result);
+	return 1;
+}
